@@ -1,0 +1,267 @@
+{
+  "etendo_code_review_rules": {
+    "version": "1.0",
+    "description": "Rules for determining BLOCKING vs NON-BLOCKING issues in Etendo code review",
+    "blocking_issues": {
+      "java": {
+        "business_object_comparison": {
+          "rule": "Using == or != to compare business object instances (DAL Entities)",
+          "required": "Use .getId().equals() for object comparison",
+          "example_wrong": "entity1 == entity2",
+          "example_correct": "entity1.getId().equals(entity2.getId())"
+        },
+        "null_pointer_exceptions": {
+          "rule": "Accessing methods/properties without null checks on objects that can be null",
+          "cases": [
+            "Dereferencing query results without validation",
+            "Iterating collections that could be null",
+            "Method calls on potentially null objects"
+          ]
+        },
+        "type_casting_errors": {
+          "rule": "Unsafe casting that could cause ClassCastException",
+          "cases": [
+            "Casting without type validation",
+            "Generic API usage without proper casting (OBCriteria)"
+          ]
+        },
+        "exception_handling": {
+          "rule": "Incorrect exception handling in Etendo context",
+          "blocking_cases": [
+            "Not using OBException for framework error propagation",
+            "Empty catch blocks: catch (Exception e) {}",
+            "Swallowing critical exceptions without logging or rethrowing"
+          ]
+        },
+        "transaction_handling": {
+          "rule": "Incorrect transaction boundaries leading to data inconsistency",
+          "cases": [
+            "Missing rollback in critical operations",
+            "Transaction boundary violations"
+          ]
+        },
+        "security_vulnerabilities": {
+          "information_exposure": {
+            "rule": "Logging or exposing sensitive information",
+            "cases": [
+              "Passwords, API keys, tokens in logs",
+              "Internal system details in error messages",
+              "Sensitive data in debug output"
+            ]
+          }
+        }
+      },
+      "sql": {
+        "sql_injection": {
+          "rule": "String concatenation in queries with user input",
+          "required": "Use parameterized queries or HQL parameter binding",
+          "example_wrong": "\"SELECT * FROM table WHERE name = '\" + userInput + \"'\"",
+          "example_correct": "Query with setParameter(\"name\", userInput)"
+        },
+        "invalid_syntax": {
+          "rule": "SQL syntax errors that will cause runtime failures"
+        },
+        "dal_errors": {
+          "rule": "Incorrect Data Access Layer usage causing database errors"
+        }
+      },
+      "xml": {
+        "etendo_configuration": {
+          "rule": "Malformed XML that breaks moduledb functionality",
+          "cases": [
+            "Invalid component declarations",
+            "Incorrect trigger configurations",
+            "Malformed artifact definitions"
+          ]
+        }
+      },
+      "javascript": {
+        "runtime_errors": {
+          "rule": "Code that will cause runtime JavaScript errors",
+          "cases": [
+            "Undefined variable access",
+            "Incorrect API usage that breaks functionality"
+          ]
+        }
+      },
+      "python": {
+        "runtime_errors": {
+          "rule": "Code that will cause runtime Python errors",
+          "cases": [
+            "Import errors",
+            "Syntax errors that break execution"
+          ]
+        }
+      }
+    },
+    "non_blocking_issues": {
+      "java": {
+        "style_and_formatting": [
+          "Code formatting (indentation, spacing)",
+          "Method visibility suggestions (private vs public)",
+          "Class structure recommendations",
+          "Generic type specifications for readability",
+          "Use of final, static modifiers (unless causing errors)",
+          "Import organization and unused imports"
+        ],
+        "best_practices": [
+          "Using Objects.equals() vs == for primitives/strings",
+          "Collection type choices (ArrayList vs LinkedList)",
+          "Primitive wrapper usage (Integer vs int)",
+          "Defensive null-checks where context doesn't require them"
+        ],
+        "refactoring": [
+          "DRY principle violations (code duplication)",
+          "Extracting methods or constants",
+          "Simplifying logical expressions",
+          "Breaking down large methods"
+        ],
+        "documentation": [
+          "Missing Javadoc or comments",
+          "Unclear naming",
+          "TODO comments"
+        ]
+      },
+      "javascript": {
+        "style_and_formatting": [
+          "Code formatting and indentation",
+          "Variable declaration styles (var vs let vs const)",
+          "Bracket placement and spacing"
+        ],
+        "best_practices": [
+          "IIFE usage patterns",
+          "ES6+ syntax suggestions",
+          "Arrow function vs function declarations",
+          "Template literals vs string concatenation"
+        ],
+        "refactoring": [
+          "Function extraction for readability",
+          "Object destructuring suggestions",
+          "Modern JavaScript pattern suggestions"
+        ]
+      },
+      "xml": {
+        "style_and_formatting": [
+          "Attribute ordering in XML elements",
+          "Whitespace and formatting in configuration files",
+          "XML element indentation"
+        ],
+        "best_practices": [
+          "Removing size attributes from CLOB columns",
+          "Adding foreign key constraints for audit columns",
+          "XML schema validation suggestions"
+        ]
+      },
+      "python": {
+        "style_and_formatting": [
+          "PEP8 style suggestions",
+          "Import order preferences",
+          "Line length and formatting"
+        ],
+        "best_practices": [
+          "Type hint recommendations",
+          "List/dict comprehension suggestions",
+          "Modern Python syntax recommendations"
+        ]
+      },
+      "sql": {
+        "style_and_formatting": [
+          "SQL formatting and indentation",
+          "Keyword capitalization",
+          "Query structure organization"
+        ],
+        "best_practices": [
+          "Query optimization suggestions (non-critical)",
+          "Index usage recommendations",
+          "Alias naming conventions"
+        ]
+      },
+      "general": {
+        "defensive_coding": [
+          "Comments starting with 'Consider', 'Ensure', 'Verify'",
+          "Suggesting optional chaining in unlikely scenarios"
+        ],
+        "documentation": [
+          "Missing README updates",
+          "Code comment improvements",
+          "API documentation suggestions"
+        ],
+        "performance": [
+          "Minor optimizations that don't fix bugs",
+          "Caching suggestions for non-critical paths",
+          "Algorithm improvements for non-critical code"
+        ]
+      }
+    },
+    "never_comment_on": {
+      "authentication_annotations": {
+        "rule": "Do not suggest adding @AuthenticationManager.Stateless or similar authentication annotations",
+        "reason": "Authentication handling is context-dependent and often handled at framework level",
+        "languages": [
+          "java"
+        ]
+      },
+      "gitignore_changes": {
+        "rule": "Do not comment on .gitignore file modifications unless they expose sensitive data",
+        "reason": "Repository management is developer's responsibility",
+        "languages": [
+          "plaintext"
+        ]
+      },
+      "xml_audit_columns": {
+        "rule": "Do not suggest adding foreign key constraints for CREATEDBY/UPDATEDBY columns",
+        "reason": "Audit column handling follows established patterns",
+        "languages": [
+          "xml"
+        ]
+      },
+      "clob_size_attributes": {
+        "rule": "Do not suggest removing size attributes from CLOB columns in XML",
+        "reason": "Database-specific configurations may require size specifications",
+        "languages": [
+          "xml"
+        ]
+      },
+      "standard_etendo_patterns": {
+        "rule": "Do not suggest changes to established Etendo patterns unless they cause errors",
+        "cases": [
+          "Standard table XML structures",
+          "Established naming conventions",
+          "Framework-specific implementations"
+        ],
+        "languages": [
+          "java",
+          "xml",
+          "javascript"
+        ]
+      },
+      "unchanged_code_suggestions": {
+        "rule": "Do not comment when the improved_code is identical to the existing_code",
+        "reason": "If there is no actual code change, the suggestion is redundant and should be skipped",
+        "languages": [
+          "java",
+          "xml",
+          "javascript",
+          "python",
+          "sql"
+        ],
+        "pattern": "improved_code == existing_code"
+      }
+    },
+    "decision_criteria": {
+      "blocking_if": [
+        "Will cause runtime failure",
+        "Creates security vulnerability",
+        "Violates data integrity",
+        "Breaks Etendo framework functionality"
+      ],
+      "non_blocking_if": [
+        "Style or formatting issue",
+        "Best practice suggestion",
+        "Refactoring opportunity",
+        "Documentation improvement",
+        "Listed in never_comment_on section"
+      ]
+    }
+  }
+}
