@@ -222,6 +222,21 @@
           "xml"
         ]
       },
+      "apache_commons_lang_v24": {
+        "rule": "Do not comment on org.apache.commons.lang.StringUtils imports when source branch contains '24'",
+        "reason": "Version 24.x branches may require the legacy Apache Commons Lang library for compatibility",
+        "condition": "source_branch.contains('24')",
+        "import_pattern": "org.apache.commons.lang.StringUtils",
+        "languages": [
+          "java"
+        ],
+        "examples": [
+          "release/24.1",
+          "release/24.2",
+          "feature/something-24",
+          "hotfix/24.1.5"
+        ]
+      },
       "standard_etendo_patterns": {
         "rule": "Do not suggest changes to established Etendo patterns unless they cause errors",
         "cases": [
