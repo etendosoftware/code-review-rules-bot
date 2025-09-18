@@ -150,7 +150,19 @@
           "Removing size attributes from CLOB columns",
           "Adding foreign key constraints for audit columns",
           "XML schema validation suggestions"
-        ]
+        ],
+        "deprecated_isencrypted_flag": {
+          "rule": "Do not block on usage of <ISENCRYPTED> in credential fields, regardless of value (Y or N)",
+          "status": "non_blocking",
+          "reason": "The ISENCRYPTED flag is deprecated; credential/token encryption is managed outside XML definitions.",
+          "notes": [
+            "If present with Y or N, treat only as an informational warning."
+          ],
+          "examples": {
+            "example_non_blocking_y": "<ISENCRYPTED><![CDATA[Y]]></ISENCRYPTED><",
+            "example_non_blocking_n": "<ISENCRYPTED><![CDATA[N]]></ISENCRYPTED>"
+          }
+        }
       },
       "python": {
         "style_and_formatting": [
