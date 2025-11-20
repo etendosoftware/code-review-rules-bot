@@ -234,6 +234,27 @@
           "xml"
         ]
       },
+      "xml_uppercase_column_name_attribute": {
+        "rule": "Do not block or suggest changes when `<column name=\"...\">` uses uppercase/mixed case identifiers such as `name=\"PRIORITY\"`",
+        "reason": "These column names are acceptable per module requirements and reviewers requested no comments about case or EM_ prefixes",
+        "languages": [
+          "xml"
+        ],
+        "examples": [
+          "<column name=\"PRIORITY\" primaryKey=\"false\" required=\"false\" type=\"VARCHAR\" size=\"60\" autoIncrement=\"false\">"
+        ]
+      },
+      "xml_uppercase_ad_columnname": {
+        "rule": "Skip any warnings or suggestions asking to lowercase `<COLUMNNAME>` elements (e.g. `<![CDATA[Priority]]>`) or to add EM_ prefixes",
+        "reason": "The AD column export intentionally uses that casing and should not be treated as blocking nor as a suggestion",
+        "languages": [
+          "xml"
+        ],
+        "examples": [
+          "<COLUMNNAME><![CDATA[Priority]]></COLUMNNAME>",
+          "<!--83742D3B0AD44090A4B642BE4778B98F-->"
+        ]
+      },
       "apache_commons_lang_v24": {
         "rule": "Do not comment on org.apache.commons.lang.StringUtils imports when source branch contains '24'",
         "reason": "Version 24.x branches may require the legacy Apache Commons Lang library for compatibility",
