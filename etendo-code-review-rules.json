@@ -245,7 +245,7 @@
         ]
       },
       "xml_uppercase_ad_columnname": {
-        "rule": "Skip any warnings or suggestions asking to lowercase `<COLUMNNAME>` elements (e.g. `<![CDATA[Priority]]>`) or to add EM_ prefixes",
+        "rule": "Skip any warnings, blockings, or suggestions asking to lowercase `<COLUMNNAME>` elements (e.g. `<![CDATA[Priority]]>`) or to add EM_ prefixes",
         "reason": "The AD column export intentionally uses that casing and should not be treated as blocking nor as a suggestion",
         "languages": [
           "xml"
