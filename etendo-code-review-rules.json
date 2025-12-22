@@ -162,6 +162,16 @@
             "example_non_blocking_y": "<ISENCRYPTED><![CDATA[Y]]></ISENCRYPTED><",
             "example_non_blocking_n": "<ISENCRYPTED><![CDATA[N]]></ISENCRYPTED>"
           }
+        },
+        "core_module_id_zero": {
+          "rule": "AD_MODULE_ID values of '0' in XML exports correspond to Core metadata and should not be blocking",
+          "status": "non_blocking",
+          "reason": "Core exports intentionally store AD_MODULE_ID as 0 so they remain part of the base application",
+          "notes": [
+            "Treat as informational only even if the bot suggests replacing with a module UUID"
+          ],
+          "examples": {
+            "ad_module_zero": "<AD_MODULE_ID><![CDATA[0]]></AD_MODULE_ID>"          }
         }
       },
       "python": {
